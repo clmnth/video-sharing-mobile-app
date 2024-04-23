@@ -4,28 +4,34 @@ import { Tabs, Redirect } from "expo-router";
 import { icons } from "../../constants";
 
 const TabIcon = ({ icon, color, name, focused }) => {
-  <View className="items-center justify-center gap-2">
-    <Image
-      source={icon}
-      resizeMod="contain"
-      tintColor={color}
-      className="w-6 h-6"
-    />
-    <Text className={`$(focused ? "font-psemibold" : "font-pregular") text-xs`} style={ {color: color} }>
-      {name}
-    </Text>
-  </View>;
+  return (
+    <View className="flex items-center justify-center gap-2">
+      <Image
+        source={icon}
+        resizeMod="contain"
+        tintColor={color}
+        className="w-6 h-6"
+      />
+      <Text
+        className={`$(focused ? "font-psemibold" : "font-pregular") text-xs`}
+        style={{ color: color }}
+      >
+        {name}
+      </Text>
+    </View>
+  );
 };
 
 const TabsLayout = () => {
   return (
     <>
       <Tabs
-        screeOptions={{
-          tabBarShowLabel: false,
+        screenOptions={{
           tabBarActiveTintColor: "#FFA001",
           tabBarInactiveTintColor: "#CDCDE0",
+          tabBarShowLabel: false,
           tabBarStyle: {
+            // backgroundColor: "#161622",
             backgroundColor: "#161622",
             borderTopWidth: 1,
             borderTopColor: "#232533",
@@ -63,6 +69,7 @@ const TabsLayout = () => {
             ),
           }}
         />
+
         <Tabs.Screen
           name="create"
           options={{
