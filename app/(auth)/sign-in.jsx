@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from "react-native";
+import { View, Text, ScrollView, Image, Alert } from "react-native";
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -7,8 +7,7 @@ import CustomButton from "../../components/CustomButton";
 import FormField from "../../components/FormField";
 
 import { Link, router } from "expo-router";
-import { signIn } from "../../lib/appwrite";
-
+import { getCurrentUser, signIn } from "../../lib/appwrite";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -29,6 +28,11 @@ const SignIn = () => {
       await signIn(form.email, form.password, form.username);
 
       // Set result to global state...
+      const result = await getCurrentUser();
+      setUser(result);
+      setIsLogged(true);
+
+      Alert.alert("Success", "You have successfully signed in");
 
       router.replace("/home");
     } catch (error) {
@@ -36,8 +40,6 @@ const SignIn = () => {
     } finally {
       setIsSubmitting(false);
     }
-
-   
   };
 
   return (
