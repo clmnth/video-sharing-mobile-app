@@ -16,14 +16,14 @@ import EmptyState from "../../components/EmptyState";
 import VideoCard from "../../components/VideoCard";
 
 import { useState, useEffect } from "react";
-import { getAllPosts } from "../../lib/appwrite";
+import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 
 
 const Home = () => {
 
   const { data: posts, refetch } = useAppwrite(getAllPosts);
-
+  const {data: latestPosts } = useAppwrite(getLatestPosts);
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = async () => {
@@ -67,7 +67,7 @@ const Home = () => {
               <Text className="text-gray-100 text-lg font-pregular mb-3">
                 Latest Videos
               </Text>
-              <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }] ?? []} />
+              <Trending posts={latestPosts ?? []} />
             </View>
           </View>
         )}
