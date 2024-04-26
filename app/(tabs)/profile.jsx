@@ -1,23 +1,31 @@
-import { Text, FlatList, View, TouchableOpacity, Image } from "react-native";
+import { FlatList, View, TouchableOpacity, Image } from "react-native";
 
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import SearchInput from "../../components/SearchInput";
 import EmptyState from "../../components/EmptyState";
 import VideoCard from "../../components/VideoCard";
 
-import { useState, useEffect } from "react";
 import { getUserPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { icons } from "../../constants";
+import InfoBox from "../../components/InfoBox";
+
+import { router } from "expo-router";
+import { signOut } from "../../lib/appwrite";
 
 const Profile = () => {
   const { user, setUser, setIsLogged } = useGlobalContext();
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
 
-  const logout = () => {};
+  const logout = async () => {
+    await signOut();
+    setUser(null);
+    setIsLogged(false);
+
+    router.replace("/sign-in");
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -42,6 +50,25 @@ const Profile = () => {
                 source={{ uri: user?.avatar }}
                 className="w-[90%] h-[90%] rounded-lg"
                 resizeMode="cover"
+              />
+            </View>
+            <InfoBox
+              title={user?.username}
+              containerStyles="mt-5"
+              titleStyles="text-lg"
+            />
+
+            <View className="mt-5 flex flex-row">
+              <InfoBox
+                title={posts.length || 0}
+                subtitle="Posts"
+                containerStyles="mr-10"
+                titleStyles="text-xl"
+              />
+              <InfoBox
+                title="1.2k"
+                subtitle="Followers"
+                titleStyles="text-lg"
               />
             </View>
           </View>

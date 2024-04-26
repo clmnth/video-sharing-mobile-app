@@ -19,9 +19,10 @@ import { useState, useEffect } from "react";
 import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const Home = () => {
-
+  const { user, setUser, setIsLogged } = useGlobalContext();
   const { data: posts, refetch } = useAppwrite(getAllPosts);
   const {data: latestPosts } = useAppwrite(getLatestPosts);
   const [refreshing, setRefreshing] = useState(false);
@@ -37,7 +38,7 @@ const Home = () => {
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <FlatList
+      <FlatList 
         data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
@@ -51,7 +52,7 @@ const Home = () => {
                   Welcome back
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
-                  Clement
+                  {user?.username}
                 </Text>
               </View>
               <View className="mt-1.5">
