@@ -1,4 +1,4 @@
-import { Text, FlatList, View } from "react-native";
+import { Text, FlatList, View, TouchableOpacity, Image } from "react-native";
 
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,10 +11,13 @@ import { useState, useEffect } from "react";
 import { getUserPosts } from "../../lib/appwrite";
 import useAppwrite from "../../lib/useAppwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { icons } from "../../constants";
 
 const Profile = () => {
   const { user, setUser, setIsLogged } = useGlobalContext();
   const { data: posts } = useAppwrite(() => getUserPosts(user.$id));
+
+  const logout = () => {};
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -23,16 +26,23 @@ const Profile = () => {
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => <VideoCard video={item} />}
         ListHeaderComponent={() => (
-          <View className="my-6 px-4">
-            <Text className="font-pmedium text-sm text-gray-100">
-              Search Results
-            </Text>
-
-            <Text className="text-2xl font-psemibold text-white">
-              {/* {query} */}
-            </Text>
-            <View className="mt-6 mb-8">
-              {/* <SearchInput initialQuery={query} /> */}
+          <View className="w-full justify-center items-center mt-6 mb-12 px-4">
+            <TouchableOpacity
+              className="w-full items-end mb-10"
+              onPress={logout}
+            >
+              <Image
+                source={icons.logout}
+                resizeMode="contain"
+                className="w-6 h-6"
+              />
+            </TouchableOpacity>
+            <View className="w-16 h-16 border border-secondary rounded-lg justify-center items-center">
+              <Image
+                source={{ uri: user?.avatar }}
+                className="w-[90%] h-[90%] rounded-lg"
+                resizeMode="cover"
+              />
             </View>
           </View>
         )}
@@ -49,7 +59,6 @@ const Profile = () => {
 };
 
 export default Profile;
-
 
 // import { View, Text } from 'react-native'
 // import React from 'react'
