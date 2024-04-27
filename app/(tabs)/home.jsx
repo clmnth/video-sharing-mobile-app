@@ -33,7 +33,7 @@ const Home = () => {
     setRefreshing(false);
   };
 
-  console.log("home data:", posts);
+ 
 
 
   return (

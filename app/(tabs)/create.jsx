@@ -2,6 +2,7 @@ import { ScrollView, Text, TouchableOpacity, View, Image } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/FormField";
+import CustomButton from "../../components/CustomButton";
 import { Video, ResizeMode } from "expo-av";
 
 import { useState } from "react";
@@ -15,6 +16,8 @@ const Create = () => {
     video: null,
     prompt: "",
   });
+
+  const submit = () => {};
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -31,6 +34,7 @@ const Create = () => {
 
         <View className="mt-7 space-y-2">
           <Text className="text-base text-gray-100">Upload Video</Text>
+
           <TouchableOpacity>
             {form.video ? (
               <Video
@@ -53,6 +57,44 @@ const Create = () => {
             )}
           </TouchableOpacity>
         </View>
+        <View className="mt-7 space-y-2">
+          <Text className="text-base text-gray-100">Thumbnail Image</Text>
+
+          <TouchableOpacity>
+            {form.thumbnail ? (
+              <Image
+                source={{ uri: form.thumbnail.uri }}
+                ResizeMode="cover"
+                className="w-full h-64 rounded-2xl"
+              />
+            ) : (
+              <View className="w-full h-16 px-4 bg-black-100 rounded-2xl justify-center items-center border-2 border-black-200 flex-row space-x-2">
+                <Image
+                  source={icons.upload}
+                  resizeMethod="contain"
+                  className="w-5 h-5"
+                />
+                <Text className="text-sm text-gray-100 font-pmedium">
+                  Choose a file
+                </Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
+
+        <FormField
+          title="AI Prompt"
+          value={form.prompt}
+          placeholder="The prompt you used to create this video"
+          handleChangeText={(e) => setForm({ ...form, title: e })}
+          otherStyles="mt-7"
+        />
+        <CustomButton
+          title="Submit & Publish"
+          handlePress={submit}
+          containerStyles="mt-7"
+          isLoading={uploading}
+        />
       </ScrollView>
     </SafeAreaView>
   );
